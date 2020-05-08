@@ -1,0 +1,13 @@
+// open command prompt
+//go to path C:\Program Files\glassfish-4.1.1\bin
+// execute following bat file name 'asadmin'
+
+C:\Program Files\glassfish-4.1.1\bin>asadmin
+
+asadmin> create-jms-resource --restype javax.jms.ConnectionFactory --description "freelance" jms/ConnectionFactory
+//Connector resource jms/ConnectionFactory created.
+//Command create-jms-resource executed successfully.
+
+asadmin> create-jms-resource --restype javax.jms.Queue --property Name=PhysicalDestination jms/FreelanceDestQueue
+//Administered object jms/FreelanceDestQueue created.
+//Command create-jms-resource executed successfully.
