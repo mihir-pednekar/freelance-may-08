@@ -18,6 +18,7 @@ import java.security.NoSuchAlgorithmException;
 import java.sql.Timestamp;
 import java.util.Date;
 import javax.ejb.EJB;
+import javax.enterprise.context.RequestScoped;
 import svc.LoginSvcImpl;
 
 
@@ -26,8 +27,8 @@ import svc.LoginSvcImpl;
  * @author OMEN
  */
 @Named(value = "regCtrl")
-@SessionScoped
-public class RegistrationController implements Serializable{
+@RequestScoped
+public class RegistrationController{
 
     @EJB
     private LoginSvcImpl loginSvcImpl;
@@ -128,7 +129,7 @@ public class RegistrationController implements Serializable{
             return null;
     }
     
-    public String addNewUser() throws NoSuchAlgorithmException{
+    private String addNewUser() throws NoSuchAlgorithmException{
         String salt = RandomString.generateRandomString(8);
         String passwd = SaltMaker.generateHashSHA256(this.password, salt);
         Timestamp tstamp = new Timestamp(System.currentTimeMillis());
@@ -146,6 +147,14 @@ public class RegistrationController implements Serializable{
         }
         loginSvcImpl.persist(usersObj);
         return "index";
+    }
+    public String addProvider() throws NoSuchAlgorithmException{
+        role = "provider";
+        return addNewUser();
+    }
+    public String addFreelancer() throws NoSuchAlgorithmException{
+        role = "freelancer";
+        return addNewUser();
     }
     
 }

@@ -6,26 +6,35 @@
 package entities;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author mihir
+ * @author OMEN
  */
 @Entity
 @Table(name = "freelancer")
+@XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Freelancer.findAll", query = "SELECT f FROM Freelancer f")})
+    @NamedQuery(name = "Freelancer.findAll", query = "SELECT f FROM Freelancer f")
+    , @NamedQuery(name = "Freelancer.findByUid", query = "SELECT f FROM Freelancer f WHERE f.uid = :uid")
+    , @NamedQuery(name = "Freelancer.findBySkills", query = "SELECT f FROM Freelancer f WHERE f.skills = :skills")
+    , @NamedQuery(name = "Freelancer.findByMessage", query = "SELECT f FROM Freelancer f WHERE f.message = :message")})
 public class Freelancer implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -40,6 +49,10 @@ public class Freelancer implements Serializable {
     @Size(max = 500)
     @Column(name = "message")
     private String message;
+    @ManyToMany(mappedBy = "freelancerList")
+    private List<Jobs> jobsList;
+    @OneToMany(mappedBy = "acceptedby")
+    private List<Jobs> jobsList1;
     @JoinColumn(name = "uid", referencedColumnName = "id", insertable = false, updatable = false)
     @OneToOne(optional = false)
     private Users users;
@@ -79,6 +92,24 @@ public class Freelancer implements Serializable {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    @XmlTransient
+    public List<Jobs> getJobsList() {
+        return jobsList;
+    }
+
+    public void setJobsList(List<Jobs> jobsList) {
+        this.jobsList = jobsList;
+    }
+
+    @XmlTransient
+    public List<Jobs> getJobsList1() {
+        return jobsList1;
+    }
+
+    public void setJobsList1(List<Jobs> jobsList1) {
+        this.jobsList1 = jobsList1;
     }
 
     public Users getUsers() {

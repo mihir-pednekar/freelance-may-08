@@ -47,12 +47,6 @@ public class LoginSvcImpl implements LoginSvc {
         catch(Exception e){
             e.printStackTrace();
         }
-        finally{
-            if(em != null){
-                em.close();
-            }
-            System.gc();
-        }
         return usersList;
     }
 

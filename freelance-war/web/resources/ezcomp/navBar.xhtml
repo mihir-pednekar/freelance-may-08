@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+
+    <!-- INTERFACE -->
+    <cc:interface>
+        <cc:attribute name="button1name" default="Home"/>
+        <cc:attribute name="button2name" default="Jobs"/>
+        <cc:attribute name="button3name" default="Profile"/>
+        <cc:attribute name="button4name" default="Logout"/>
+        <cc:attribute name="button1url"/>
+        <cc:attribute name="button2url"/>
+        <cc:attribute name="button3url"/>
+        <cc:attribute name="button4url"/>
+    </cc:interface>
+
+    <!-- IMPLEMENTATION -->
+    <cc:implementation>
+        <h:form>
+            <h:button value="#{cc.attrs.button1name}" outcome="#{cc.attrs.button1url}" style="margin: 0px 50px; padding: 0px 30px;"/>
+            <h:button value="#{cc.attrs.button2name}" outcome="#{cc.attrs.button2url}" style="margin: 0px 50px; padding: 0px 30px;"/>
+            <h:button value="#{cc.attrs.button3name}" outcome="#{cc.attrs.button3url}" style="margin: 0px 50px; padding: 0px 30px;"/>
+            <h:button value="#{cc.attrs.button4name}" outcome="#{cc.attrs.button4url}" style="margin: 0px 50px; padding: 0px 30px;"/>
+        </h:form>
+    </cc:implementation>
+</html>
