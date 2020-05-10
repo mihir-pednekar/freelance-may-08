@@ -79,10 +79,12 @@ public class LoginController implements Serializable {
         List<Users> userModelList = loginSvcImpl.validateUserFromDB(user, passwd);
         if(userModelList != null){
             HttpSession session = SessionUtils.getSession();
-            session.setAttribute("username", user);
+            
             //publish to JMS Queue..
             sendJMSMessageToFreelanceDestQueue("Username "+user+" has login successfully.");
             userModelList.forEach((um) -> {
+            session.setAttribute("username", user);
+            session.setAttribute("user_id", um.getId());
                 this.setRole(um.getUserRole());
                 this.currentUser = um;
             });     

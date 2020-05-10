@@ -1,0 +1,74 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:ez="http://xmlns.jcp.org/jsf/composite/ezcomp"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Provider Home</title>
+    </h:head>
+    <h:body>
+        
+        <ui:composition template="./resources/pageTemplate.xhtml">
+        <ui:define name="top">
+                <ez:navBar button1url="providerHome"
+                           button2url="providerJobs"
+                           button3url="providerProfile"
+                           button4url="index"/>
+        </ui:define>
+        <ui:define name="content">
+        <h:form>
+            
+            <table>
+                <tr>
+                  <td>Title</td>
+                  <td>
+                      <h:inputText label="Title" value="#{jobsController.title}"/>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Skills</td>
+                  <td>
+                      <h:inputText label="Skills" value="#{jobsController.skills}"/>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Description</td>
+                  <td>
+                      <h:inputText label="Description" value="#{jobsController.description}"/>
+                  </td>
+                </tr>
+                
+                <tr>
+                  <td>Job Status</td>
+                  <td>
+                      <h:selectOneMenu label="Job Status" value = "#{jobsController.jobstatus}"> 
+                          <f:selectItem itemValue = "Open" itemLabel = "Open"/> 
+                      </h:selectOneMenu> 
+                  </td>
+                </tr>
+                
+                <tr>
+                  <td>Payment</td>
+                  <td>
+                      <h:inputText label="Payment offered" value="#{jobsController.payment}"/>
+                  </td>
+                </tr>
+                               
+                <tr>
+                    <td>
+                        <h:commandButton label="Add Job" value="Add Job" action="#{jobsController.addNewJob()}"/>
+                    </td>
+                </tr>
+            </table>
+        </h:form>
+        </ui:define>
+
+        <ui:define name="bottom">
+                This is the jobs registration page for provider.
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

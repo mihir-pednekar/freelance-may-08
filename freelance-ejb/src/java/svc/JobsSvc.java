@@ -6,6 +6,7 @@
 package svc;
 
 import entities.Jobs;
+import entities.Provider;
 import java.util.List;
 import javax.ejb.Remote;
 
@@ -15,5 +16,8 @@ import javax.ejb.Remote;
  */
 @Remote
 public interface JobsSvc {
+   public boolean persist(Object obj);
     public List<Jobs> getAllJobs();
+    public List<Jobs> getJobsByProv(Provider userid);
+
 }

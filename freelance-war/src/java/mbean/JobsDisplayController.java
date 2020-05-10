@@ -6,19 +6,25 @@
 package mbean;
 
 import javax.inject.Named;
-import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
 import javax.ejb.EJB;
 import svc.JobsSvcImpl;
 import entities.Jobs;
+import entities.Provider;
 import java.util.List;
+import javax.annotation.ManagedBean;
+import javax.annotation.PostConstruct;
+import javax.enterprise.context.RequestScoped;
+import javax.servlet.http.HttpSession;
+import utils.SessionUtils;
 
 /**
  *
  * @author OMEN
  */
 @Named(value = "jobsDisp")
-@SessionScoped
+@RequestScoped
+@ManagedBean
 public class JobsDisplayController implements Serializable {
 
     /**
@@ -31,7 +37,9 @@ public class JobsDisplayController implements Serializable {
     
     public JobsDisplayController() {
         jobsSvcImpl = new JobsSvcImpl();
-        getAllOpenJobs();
+       //getAllOpenJobs();
+      //List<Jobs> listOfJobs = getJobsByProv();
+      //setJobsList(listOfJobs);
     }
 
     public JobsSvcImpl getJobsSvcImpl() {
@@ -51,11 +59,21 @@ public class JobsDisplayController implements Serializable {
     }
     
     public void getAllJobs(){
-        jobsList = jobsSvcImpl.getAllJobs();
+        jobsList = getJobsSvcImpl().getAllJobs();
     }
     
     public void getAllOpenJobs(){
         jobsList = jobsSvcImpl.getAllOpenJobs();
+    }
+    
+    @PostConstruct
+    public void getJobsByProv(){
+        HttpSession session = SessionUtils.getSession();
+           Long userid= (Long) session.getAttribute("user_id");
+
+        jobsList = jobsSvcImpl.getJobsByProv(new Provider(userid));
+        this.setJobsList(jobsList);
+        //return jobsList;
     }
     
 }
