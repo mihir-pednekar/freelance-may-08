@@ -20,13 +20,13 @@
             <ui:define name="content">
             <h:form>
            
-                        <h:commandButton label="add Job" value="add Job" action="jobRegistration"/>
+                    <h:commandButton label="add Job" value="add Job" action="jobRegistration"/>
                            
-                <h:dataTable value='#{jobsDisp.jobsList}' var='job' border="1" cellpadding="5">
+                    <h:dataTable value='#{jobsDisp.jobModelList}' var='job' border="1" cellpadding="5">
 
                     <h:column>
                         <f:facet name="header">Job ID</f:facet>
-                        #{job.jobid}
+                        <h:link value="#{job.jobid}" outcome="assignJob" onclick="#{jobsDisp.onClickJobId(job.jobid)}" disabled="#{job.isDisable}"/>
                     </h:column>
 
                     <h:column>
@@ -39,7 +39,15 @@
                     </h:column>
                     <h:column>
                         <f:facet name="header">Payment</f:facet>
-                        #{job.payment}
+                        $#{job.payment}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Status</f:facet>
+                        #{job.jobstatus}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Action</f:facet>
+                        <h:commandButton label="Remove Job" value="Remove Job" action="#" disabled="#{job.isDisable}" />
                     </h:column>
 
                 </h:dataTable>

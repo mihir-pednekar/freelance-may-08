@@ -17,4 +17,7 @@ public class SqlQueryConstants {
     public static final String FETCH_JOBS_BY_PROV = "SELECT j FROM Jobs j WHERE j.createdby = :createdby";
     public static final String FETCH_ALL_JOBS = "SELECT * FROM Jobs";
     public static final String FETCH_JOBS_BY_STATUS = "SELECT j FROM Jobs j WHERE j.jobstatus = :jobstatus";
+    
+    public static final String FETCH_FREELANCERS_BY_JOBID = "SELECT a FROM Jobapps a WHERE a.jobid = :jobid";
+
 }
