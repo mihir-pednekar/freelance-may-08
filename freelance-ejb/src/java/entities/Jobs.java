@@ -87,12 +87,15 @@ public class Jobs implements Serializable {
         this.jobid = jobid;
     }
 
-    public Jobs(Long jobid, String title, String description, int payment, String jobstatus) {
+    public Jobs(Long jobid, String title, String skills, String description, int payment, String jobstatus, Provider createdby) {
         this.jobid = jobid;
         this.title = title;
+        this.skills = skills;
         this.description = description;
         this.payment = payment;
         this.jobstatus = jobstatus;
+        this.createdby = createdby;
+      //  this.acceptedby = acceptedby;
     }
 
     public Long getJobid() {

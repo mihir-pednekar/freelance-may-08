@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package mbean;
 
 import dao.UsersDao;
@@ -22,10 +18,6 @@ import javax.enterprise.context.RequestScoped;
 import svc.LoginSvcImpl;
 
 
-/**
- *
- * @author OMEN
- */
 @Named(value = "regCtrl")
 @RequestScoped
 public class RegistrationController{

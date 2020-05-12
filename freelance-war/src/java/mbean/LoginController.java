@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package mbean;
 
 import com.constants.ValidationConstants;
@@ -19,10 +15,7 @@ import javax.servlet.http.HttpSession;
 import svc.LoginSvcImpl;
 import utils.SessionUtils;
 
-/**
- *
- * @author OMEN
- */
+
 @Named(value = "loginCtrl")
 @SessionScoped
 public class LoginController implements Serializable {
@@ -79,10 +72,12 @@ public class LoginController implements Serializable {
         List<Users> userModelList = loginSvcImpl.validateUserFromDB(user, passwd);
         if(userModelList != null){
             HttpSession session = SessionUtils.getSession();
-            session.setAttribute("username", user);
+            
             //publish to JMS Queue..
             sendJMSMessageToFreelanceDestQueue("Username "+user+" has login successfully.");
             userModelList.forEach((um) -> {
+            session.setAttribute("username", user);
+            session.setAttribute("user_id", um.getId());
                 this.setRole(um.getUserRole());
                 this.currentUser = um;
             });     

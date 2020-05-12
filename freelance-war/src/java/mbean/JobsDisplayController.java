@@ -6,19 +6,25 @@
 package mbean;
 
 import javax.inject.Named;
-import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
 import javax.ejb.EJB;
 import svc.JobsSvcImpl;
 import entities.Jobs;
+import entities.Provider;
+import java.util.ArrayList;
 import java.util.List;
+import javax.annotation.ManagedBean;
+import javax.annotation.PostConstruct;
+import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.SessionScoped;
+import javax.servlet.http.HttpSession;
+import model.JobsModel;
+import utils.SessionUtils;
 
-/**
- *
- * @author OMEN
- */
+
 @Named(value = "jobsDisp")
 @SessionScoped
+@ManagedBean
 public class JobsDisplayController implements Serializable {
 
     /**
@@ -27,6 +33,9 @@ public class JobsDisplayController implements Serializable {
     @EJB
     private JobsSvcImpl jobsSvcImpl;
     private List<Jobs> jobsList;
+    private List<JobsModel> jobModelList=new ArrayList<>();
+
+   // private boolean disable=true;
     private String searchStr, keyStr;
 
     public String getSearchStr() {
@@ -48,8 +57,12 @@ public class JobsDisplayController implements Serializable {
     
     public JobsDisplayController() {
         jobsSvcImpl = new JobsSvcImpl();
-        getAllOpenJobs();
+       //getAllOpenJobs();
+      //List<Jobs> listOfJobs = getJobsByProv();
+      //setJobsList(listOfJobs);
     }
+
+ 
 
     public JobsSvcImpl getJobsSvcImpl() {
         return jobsSvcImpl;
@@ -68,19 +81,42 @@ public class JobsDisplayController implements Serializable {
     }
     
     public void getAllJobs(){
-        jobsList = jobsSvcImpl.getAllJobs();
+        jobsList = getJobsSvcImpl().getAllJobs();
     }
     
     public void getAllOpenJobs(){
         jobsList = jobsSvcImpl.getAllOpenJobs();
     }
-    
-    public void applySearch(){
-        
+
+    public List<JobsModel> getJobModelList() {
+        return jobModelList;
     }
-    
-    public void applyKeyFilter(){
         
+    @PostConstruct
+    public void getJobsByProv(){
+        HttpSession session = SessionUtils.getSession();
+           Long userid= (Long) session.getAttribute("user_id");
+
+        jobsList = jobsSvcImpl.getJobsByProv(new Provider(userid));
+        
+        this.setJobsList(jobsList);
+        //return jobsList;
+        
+         jobsList.forEach((um) -> {
+         JobsModel model=new JobsModel(String.valueOf(um.getJobid()), um.getTitle(), um.getSkills(), um.getDescription(), String.valueOf(um.getPayment()), um.getJobstatus(), String.valueOf(um.getCreatedby()));
+                if(um.getJobstatus().toUpperCase().contains("OPEN"))
+                {
+                   model.setIsDisable(false);
+                }
+                else
+                   model.setIsDisable(true);
+
+                jobModelList.add(model);
+
+                //else
+                   // setDisable(false);
+
+            });  
     }
     
 }
