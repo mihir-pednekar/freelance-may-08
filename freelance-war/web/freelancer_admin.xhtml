@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:ez="http://xmlns.jcp.org/jsf/composite/ezcomp"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Freelancers List</title>
+    </h:head>
+        <h:body>
+        
+        <ui:composition template="./resources/pageTemplate.xhtml">
+            <ui:define name="top">
+               <ez:navBar button1url="adminHome"
+                           button2url="users" button2name="Users"
+                           button3url="jobs" button3name="Jobs"
+                           button4url="index"/>
+            </ui:define>
+            
+            <ui:define name="content">
+                <h:form>
+                    <h:dataTable value='#{ViewUsersCont.freelancerModelList}' var='free' border="1" cellpadding="5">
+                    <h:column>
+                        <f:facet name="header">Freelancer ID</f:facet>
+                        #{free.id}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Name</f:facet>
+                        #{free.firstName} #{free.lastName}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Username</f:facet>
+                        #{free.username}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Role</f:facet>
+                        #{free.userRole}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Skills</f:facet>
+                        #{free.skills}
+                    </h:column>
+                    <h:column>
+                       <h:commandButton label="Remove" value="Remove" action="#"/>
+                    </h:column>
+                </h:dataTable>
+            </h:form>
+     
+            </ui:define>
+            <ui:define name="bottom">
+                This is the show freelancers display for admin.
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

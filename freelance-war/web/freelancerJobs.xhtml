@@ -4,7 +4,7 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:ez="http://xmlns.jcp.org/jsf/composite/ezcomp"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
       xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
     <h:head>
         <title>Freelancer Jobs</title>
@@ -41,6 +41,12 @@
                             <f:facet name="header">Payment</f:facet>
                             $#{job.payment}
                         </h:column>
+
+
+	                    <h:column>
+	                        <f:facet name="header">DateTime</f:facet>
+	                        #{job.createdby.users.regDate}
+	                    </h:column>
 
                     </h:dataTable>
                 </h:form>

@@ -12,6 +12,7 @@ import entities.Freelancer;
 import entities.Jobapps;
 import entities.Jobs;
 import entities.Provider;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -100,6 +101,7 @@ public class JobsSvcImpl implements JobsSvc{
     @Override
     public List<Jobs> getJobsByProv(Provider userID) { 
         try{
+            jobsList=new ArrayList<>();
             em = PersistenceUnitConnec.createEntityManager(SqlQueryConstants.PERSIST_UNIT);
             Query query = em.createQuery(SqlQueryConstants.FETCH_JOBS_BY_PROV);
             query.setParameter("createdby", userID);

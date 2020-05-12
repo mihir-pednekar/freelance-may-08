@@ -32,28 +32,11 @@ public class JobsDisplayController implements Serializable {
      */
     @EJB
     private JobsSvcImpl jobsSvcImpl;
-    private List<Jobs> jobsList;
+    private List<Jobs> jobsList=new ArrayList<>();
     private List<Jobs> fJobsList;
     private List<JobsModel> jobModelList=new ArrayList<>();
 
    // private boolean disable=true;
-    private String searchStr, keyStr;
-
-    public String getSearchStr() {
-        return searchStr;
-    }
-
-    public String getKeyStr() {
-        return keyStr;
-    }
-
-    public void setSearchStr(String searchStr) {
-        this.searchStr = searchStr;
-    }
-
-    public void setKeyStr(String keyStr) {
-        this.keyStr = keyStr;
-    }
     
     
     public JobsDisplayController() {
@@ -101,17 +84,19 @@ public class JobsDisplayController implements Serializable {
     public List<JobsModel> getJobModelList() {
         return jobModelList;
     }
+
+    public void setJobModelList(List<JobsModel> jobModelList) {
+        this.jobModelList = jobModelList;
+    }
         
     public void getJobsByProv(){
         HttpSession session = SessionUtils.getSession();
-           Long userid= (Long) session.getAttribute("user_id");
-
-        jobsList = jobsSvcImpl.getJobsByProv(new Provider(userid));
+        Long userid= (Long) session.getAttribute("user_id");
         
-        this.setJobsList(jobsList);
+        this.setJobsList(jobsSvcImpl.getJobsByProv(new Provider(userid)));
         //return jobsList;
         
-         jobsList.forEach((um) -> {
+         this.getJobsList().forEach((um) -> {
          JobsModel model=new JobsModel(String.valueOf(um.getJobid()), um.getTitle(), um.getSkills(), um.getDescription(), String.valueOf(um.getPayment()), um.getJobstatus(), String.valueOf(um.getCreatedby()));
                 if(um.getJobstatus().toUpperCase().contains("OPEN"))
                 {
@@ -119,15 +104,16 @@ public class JobsDisplayController implements Serializable {
                 }
                 else
                    model.setIsDisable(true);
-
-                jobModelList.add(model);
+                getJobModelList().add(model);
+                this.setJobModelList(this.getJobModelList());
 
                 //else
                    // setDisable(false);
 
             });  
     }
-        public void onClickJobId(String jobId)
+    
+    public void onClickJobId(String jobId)
     {
         jobModelList.forEach((um) -> {
         if(um.getJobid().compareTo(jobId)==0)
@@ -135,7 +121,12 @@ public class JobsDisplayController implements Serializable {
             um.setIsClicked(true);
         }
         });  
-
+        
     }
-    
+     
+    public List<Jobs> displayAllJobs()
+    {
+        jobsList = getJobsSvcImpl().getAllJobs();
+        return jobsList;
+    }
 }

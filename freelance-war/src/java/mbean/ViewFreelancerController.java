@@ -57,7 +57,7 @@ public class ViewFreelancerController
         //return jobsList;
         
          freelancerList.forEach((um) -> {
-         FreelancerModel model=new FreelancerModel(String.valueOf(um.getUid()),um.getSkills(), um.getMessage(), um.getUsers().getFirstname(), um.getUsers().getLastname());
+         FreelancerModel model=new FreelancerModel(String.valueOf(um.getUid()),um.getSkills(), um.getMessage(), um.getUsers().getFirstname(), um.getUsers().getLastname(), um.getUsers().getUserRole(),um.getUsers().getUsername());
                 
 
                 //else

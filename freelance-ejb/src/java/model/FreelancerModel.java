@@ -4,16 +4,38 @@ package model;
 
 public class FreelancerModel extends UsersModel{
     private String Skills;
-    private String id, message,  firstName, lastName;
+    private String id, message,  firstName, lastName,role,username;
 
-    public FreelancerModel(String id, String Skills, String message, String firstName, String lastName) {
+    public FreelancerModel(String id, String Skills, String message, String firstName, String lastName,String role, String username) {
         this.id = id;
         this.Skills = Skills;
         this.message = message;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.role=role;
+        this.username=username;
     }
 
+    public FreelancerModel() {
+    }
+    
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+    
     public String getId() {
         return id;
     }
