@@ -17,61 +17,73 @@
                            button4url="index"/>
             </ui:define>
             <ui:define name="content">
-                <table id="profileTable">
-                    <tr>
-                        <td>
-                           id
-                        </td>
-                        <td>
-                           #{loginCtrl.getUserId()}
-                        </td>
-                    </tr>
-                    
-                    <tr>
-                        <td>
-                           Name
-                        </td>
-                        <td>
-                           #{loginCtrl.getFullName()}
-                        </td>
-                    </tr>
-                    
-                    <tr>
-                        <td>
-                           Username
-                        </td>
-                        <td>
-                           #{loginCtrl.getUsername()}
-                        </td>
-                    </tr>
-                    
-                    <tr>
-                        <td>
-                           Role
-                        </td>
-                        <td>
-                           #{loginCtrl.getUserRole()}
-                        </td>
-                    </tr>
-                    
-                    <tr>
-                        <td>
-                           Skills
-                        </td>
-                        <td>
-                           #{loginCtrl.getUserSkills()}
-                        </td>
-                    </tr>
-                    
-                    <tr>
-                        <td>
-                           Message
-                        </td>
-                        <td>
-                           #{loginCtrl.getUserMessage()}
-                        </td>
-                    </tr>
-                </table>
+                <h:form>
+                    <table id="profileTable">
+                        <tr>
+                            <td>
+                               id
+                            </td>
+                            <td>
+                               #{loginCtrl.getUserId()}
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                               First Name
+                            </td>
+                            <td>
+                                <h:inputText value = "#{loginCtrl.firstname}"/>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                               First Name
+                            </td>
+                            <td>
+                                <h:inputText value = "#{loginCtrl.lastname}"/>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                               Username
+                            </td>
+                            <td>
+                               #{loginCtrl.getUsername()}
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                               Role
+                            </td>
+                            <td>
+                               #{loginCtrl.getUserRole()}
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                               Skills
+                            </td>
+                            <td>
+                                <h:inputText value = "#{loginCtrl.skills}"/>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                               Message
+                            </td>
+                            <td>
+                                <h:inputTextarea rows="10" value = "#{loginCtrl.message}"/>
+                            </td>
+                        </tr>
+                    </table>
+                    <h:commandButton value="Update" action="#{loginCtrl.updateFreelancerProfile()}"/>
+                </h:form>
             </ui:define>
             <ui:define name="bottom">
                 This is the profile view for freelancer.

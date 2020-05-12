@@ -1,4 +1,8 @@
-
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package mbean;
 
 import com.constants.ValidationConstants;
@@ -15,7 +19,10 @@ import javax.servlet.http.HttpSession;
 import svc.LoginSvcImpl;
 import utils.SessionUtils;
 
-
+/**
+ *
+ * @author OMEN
+ */
 @Named(value = "loginCtrl")
 @SessionScoped
 public class LoginController implements Serializable {
@@ -43,7 +50,7 @@ public class LoginController implements Serializable {
         this.passwd = passwd;
         this.role = role;
     }
-
+    
     public String getUser() {
         return user;
     }
@@ -149,4 +156,44 @@ public class LoginController implements Serializable {
             return null;
         } 
     }
+    
+    public void updateFreelancerProfile(){
+        
+    }
+    
+    //Current User getters and setters
+    
+    public void setFirstname(String firstname){
+        this.currentUser.setFirstname(firstname);
+    }
+    
+    public String getFirstname(){
+        return this.currentUser.getFirstname();
+    }
+
+    public void setLastname(String lastname){
+        this.currentUser.setLastname(lastname);
+    }
+    
+    public String getLastname(){
+        return this.currentUser.getLastname();
+    }
+
+    public void setSkills(String skills){
+        this.currentUser.getFreelancer().setSkills(skills);
+    }
+    
+    public String getSkills(){
+        return this.currentUser.getFreelancer().getSkills();
+    }
+
+    public void setMessage(String message){
+        this.currentUser.getFreelancer().setMessage(message);
+    }
+    
+    public String getMessage(){
+        return this.currentUser.getFreelancer().getMessage();
+    }
+    
+    
 }

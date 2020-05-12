@@ -33,6 +33,7 @@ public class JobsDisplayController implements Serializable {
     @EJB
     private JobsSvcImpl jobsSvcImpl;
     private List<Jobs> jobsList;
+    private List<Jobs> fJobsList;
     private List<JobsModel> jobModelList=new ArrayList<>();
 
    // private boolean disable=true;
@@ -40,9 +41,18 @@ public class JobsDisplayController implements Serializable {
     
     public JobsDisplayController() {
         jobsSvcImpl = new JobsSvcImpl();
-       //getAllOpenJobs();
+        getAllOpenJobs();
+        getJobsByProv();
       //List<Jobs> listOfJobs = getJobsByProv();
       //setJobsList(listOfJobs);
+    }
+
+    public List<Jobs> getfJobsList() {
+        return fJobsList;
+    }
+
+    public void setfJobsList(List<Jobs> fJobsList) {
+        this.fJobsList = fJobsList;
     }
 
  
@@ -68,14 +78,13 @@ public class JobsDisplayController implements Serializable {
     }
     
     public void getAllOpenJobs(){
-        jobsList = jobsSvcImpl.getAllOpenJobs();
+        fJobsList = jobsSvcImpl.getAllOpenJobs();
     }
 
     public List<JobsModel> getJobModelList() {
         return jobModelList;
     }
         
-    @PostConstruct
     public void getJobsByProv(){
         HttpSession session = SessionUtils.getSession();
            Long userid= (Long) session.getAttribute("user_id");

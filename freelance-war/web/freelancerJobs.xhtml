@@ -4,7 +4,8 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:ez="http://xmlns.jcp.org/jsf/composite/ezcomp"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
     <h:head>
         <title>Freelancer Jobs</title>
     </h:head>
@@ -18,36 +19,31 @@
                            button4url="index"/>
             </ui:define>
             <ui:define name="content">
-                
-                <h:dataTable value='#{jobsDisp.jobsList}' var='job' border="1" cellpadding="5">
+                <h:form>
+                    <h:dataTable value='#{jobsDisp.fJobsList}' var='job' border="1" cellpadding="5">
 
-                    <h:column>
-                        <f:facet name="header">Job ID</f:facet>
-                        #{job.jobid}
-                    </h:column>
+                        <h:column>
+                            <f:facet name="header">Job ID</f:facet>
+                            #{job.jobid}
+                        </h:column>
 
-                    <h:column>
-                        <f:facet name="header">Title</f:facet>
-                        #{job.title}
-                    </h:column>
+                        <h:column>
+                            <f:facet name="header">Title</f:facet>
+                            #{job.title}
+                        </h:column>
 
-                    <h:column>
-                        <f:facet name="header">Created By</f:facet>
-                        #{job.createdby.users.firstname} #{job.createdby.users.lastname}
-                    </h:column>
+                        <h:column>
+                            <f:facet name="header">Created By</f:facet>
+                            #{job.createdby.users.firstname} #{job.createdby.users.lastname}
+                        </h:column>
 
-                    <h:column>
-                        <f:facet name="header">Payment</f:facet>
-                        #{job.payment}
-                    </h:column>
+                        <h:column>
+                            <f:facet name="header">Payment</f:facet>
+                            $#{job.payment}
+                        </h:column>
 
-
-                    <h:column>
-                        <f:facet name="header">DateTime</f:facet>
-                        $#{job.payment}
-                    </h:column>
-
-                </h:dataTable>
+                    </h:dataTable>
+                </h:form>
             </ui:define>
             <ui:define name="bottom">
                 This is the jobs display for freelancer.
