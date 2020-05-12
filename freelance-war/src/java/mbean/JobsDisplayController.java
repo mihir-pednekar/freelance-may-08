@@ -27,6 +27,23 @@ public class JobsDisplayController implements Serializable {
     @EJB
     private JobsSvcImpl jobsSvcImpl;
     private List<Jobs> jobsList;
+    private String searchStr, keyStr;
+
+    public String getSearchStr() {
+        return searchStr;
+    }
+
+    public String getKeyStr() {
+        return keyStr;
+    }
+
+    public void setSearchStr(String searchStr) {
+        this.searchStr = searchStr;
+    }
+
+    public void setKeyStr(String keyStr) {
+        this.keyStr = keyStr;
+    }
     
     
     public JobsDisplayController() {
@@ -56,6 +73,14 @@ public class JobsDisplayController implements Serializable {
     
     public void getAllOpenJobs(){
         jobsList = jobsSvcImpl.getAllOpenJobs();
+    }
+    
+    public void applySearch(){
+        
+    }
+    
+    public void applyKeyFilter(){
+        
     }
     
 }
