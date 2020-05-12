@@ -37,6 +37,23 @@ public class JobsDisplayController implements Serializable {
     private List<JobsModel> jobModelList=new ArrayList<>();
 
    // private boolean disable=true;
+    private String searchStr, keyStr;
+
+    public String getSearchStr() {
+        return searchStr;
+    }
+
+    public String getKeyStr() {
+        return keyStr;
+    }
+
+    public void setSearchStr(String searchStr) {
+        this.searchStr = searchStr;
+    }
+
+    public void setKeyStr(String keyStr) {
+        this.keyStr = keyStr;
+    }
     
     
     public JobsDisplayController() {
@@ -110,9 +127,7 @@ public class JobsDisplayController implements Serializable {
 
             });  
     }
-    
-    
-    public void onClickJobId(String jobId)
+        public void onClickJobId(String jobId)
     {
         jobModelList.forEach((um) -> {
         if(um.getJobid().compareTo(jobId)==0)
@@ -120,7 +135,7 @@ public class JobsDisplayController implements Serializable {
             um.setIsClicked(true);
         }
         });  
-        
+
     }
     
 }
