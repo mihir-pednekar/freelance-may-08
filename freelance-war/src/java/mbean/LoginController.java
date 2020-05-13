@@ -78,6 +78,7 @@ public class LoginController implements Serializable {
             userModelList.forEach((um) -> {
             session.setAttribute("username", user);
             session.setAttribute("user_id", um.getId());
+            session.setAttribute("user_role", um.getUserRole());
                 this.setRole(um.getUserRole());
                 this.currentUser = um;
             });     

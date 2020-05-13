@@ -25,7 +25,7 @@ import utils.SessionUtils;
 
 
 @Named(value = "jobsDisp")
-@RequestScoped
+@SessionScoped
 @ManagedBean
 public class JobsDisplayController implements Serializable {
 
@@ -47,7 +47,7 @@ public class JobsDisplayController implements Serializable {
         filterCase = 0;
         searchStr = "";
         jobsSvcImpl = new JobsSvcImpl();
-        getJobsByProv();
+        //getJobsByProv();
       //List<Jobs> listOfJobs = getJobsByProv();
       //setJobsList(listOfJobs);
     }
@@ -106,24 +106,23 @@ public class JobsDisplayController implements Serializable {
         this.jobModelList = jobModelList;
     }
 
-	@PostConstruct
+	//@PostConstruct
     public void init(){
         //after constructor call
         HttpSession session = SessionUtils.getSession();
         Long userid= (Long) session.getAttribute("user_id");
         String userrole= (String) session.getAttribute("user_role");
         if(userrole.compareTo("provider") == 0){
+            List<JobsModel> emptyJobModelList=new ArrayList<>();
+            this.setJobModelList(emptyJobModelList);
             getJobsByProv(userid);
         }
-        if(userrole.compareTo("freelancer") == 0){
-            getAllOpenJobs();
-        }
+//        if(userrole.compareTo("freelancer") == 0){
+//            getAllOpenJobs();
+//        }
     }
 	
-    public void getJobsByProv(){
-        HttpSession session = SessionUtils.getSession();
-        Long userid= (Long) session.getAttribute("user_id");
-        
+    public void getJobsByProv(Long userid){
         this.setJobsList(jobsSvcImpl.getJobsByProv(new Provider(userid)));
         //return jobsList;
         
