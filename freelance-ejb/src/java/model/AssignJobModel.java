@@ -3,17 +3,18 @@ package model;
 
 public class AssignJobModel {
     
-    private String jobid, title, description,jobstatus, freelanceID;
+    private String jobid, title, description,jobstatus, freelanceID, freelanceName;
 
-    public AssignJobModel(String jobid, String title, String description, String jobstatus, String freelanceID) {
+    public AssignJobModel() {
+    }
+
+    public AssignJobModel(String jobid, String title, String description, String jobstatus, String freelanceID, String freelanceName) {
         this.jobid = jobid;
         this.title = title;
         this.description = description;
         this.jobstatus = jobstatus;
         this.freelanceID = freelanceID;
-    }
-
-    public AssignJobModel() {
+        this.freelanceName = freelanceName;
     }
 
     public String getJobid() {
@@ -55,7 +56,14 @@ public class AssignJobModel {
     public void setFreelanceID(String freelanceID) {
         this.freelanceID = freelanceID;
     }
-    
-    
+
+    public String getFreelanceName() {
+        return freelanceName;
+    }
+
+    public void setFreelanceName(String freelanceName) {
+        this.freelanceName = freelanceName;
+    }
+
     
 }

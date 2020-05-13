@@ -5,6 +5,7 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:ez="http://xmlns.jcp.org/jsf/composite/ezcomp"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
+    
     <h:head>
         <title>Provider Home</title>
     </h:head>
@@ -23,22 +24,31 @@
             <h:dataTable value='#{assignJobController.assignJobModelList}' var='job' border="1" cellpadding="5"> 
             
                     <h:column>
-                        <f:facet name="header">#{job.jobid}</f:facet>
+                        <f:facet name="header">Freelance ID</f:facet>
+                        <h:link value="#{job.jobid}" outcome="viewfreelancer" target="_blank">
+                            <f:param  name="freeid" value="#{job.jobid}" /> 
+                        </h:link>
                     </h:column>
                     <h:column>
-                        <f:facet name="header">#{job.jobstatus}</f:facet>
+                        <f:facet name="header">Freelance Name</f:facet>
+                        #{job.freelanceName}
                     </h:column>
                     <h:column>
-                        <f:facet name="header">#{job.description}</f:facet>
+                        <f:facet name="header">Job ID</f:facet>
+                        #{job.jobid}
                     </h:column>
                     <h:column>
-                        <f:facet name="header">#{job.title}</f:facet>
+                        <f:facet name="header">Job Title</f:facet>
+                        #{job.title}
                     </h:column>
                     <h:column>
-                        <f:facet name="header">#{job.freelanceID}</f:facet>
+                        <f:facet name="header">Job Status</f:facet>
+                        #{job.jobstatus}
                     </h:column>
-           
-           
+                    <h:column>
+                        <f:facet name="header">Action</f:facet>
+                        <h:commandButton label="Assign" value="Assign Freelancer" action="providerJobs?faces-redirect=true" />
+                    </h:column>
             </h:dataTable>
         </h:form>
         </ui:define>

@@ -1,4 +1,5 @@
 package mbean;
+import entities.Freelancer;
 import entities.Jobapps;
 import entities.Jobs;
 import java.io.Serializable;
@@ -9,6 +10,8 @@ import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.bean.ManagedProperty;
+import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletRequest;
 import model.AssignJobModel;
 import model.JobsModel;
 import svc.JobsSvcImpl;
@@ -19,21 +22,10 @@ import svc.JobsSvcImpl;
 public class AssignJobController implements Serializable {
     @EJB
     private JobsSvcImpl jobsSvcImpl;
-    List<AssignJobModel> assignJobModelList=new ArrayList<>();
-    
-    @ManagedProperty(value="#{jobsDisp}")
-    private JobsDisplayController jobDispCont;
-    
+    private List<AssignJobModel> assignJobModelList=new ArrayList<>();
+    private List<Jobs> jobList; 
     
     public AssignJobController() {
-    }
-
-    public JobsSvcImpl getJobsSvcImpl() {
-        return jobsSvcImpl;
-    }
-
-    public void setJobsSvcImpl(JobsSvcImpl jobsSvcImpl) {
-        this.jobsSvcImpl = jobsSvcImpl;
     }
 
     public List<AssignJobModel> getAssignJobModelList() {
@@ -43,22 +35,26 @@ public class AssignJobController implements Serializable {
     public void setAssignJobModelList(List<AssignJobModel> assignJobModelList) {
         this.assignJobModelList = assignJobModelList;
     }
-    
-    @PostConstruct
-    public void getFreelancersByJobId(){
-          List<JobsModel> modellist=jobDispCont.getJobModelList();
-       
-           modellist.forEach((um) -> {
-               if(um.isIsClicked())
-               {
-                List<Jobapps> jobAppsList= jobsSvcImpl.getFreelancersByJobId(new Jobs(Long.parseLong(um.getJobid())));
-                 jobAppsList.forEach((apps) -> {
-                     getAssignJobModelList().add(new AssignJobModel(um.getJobid(), um.getTitle(), um.getDescription(), um.getJobstatus(), String.valueOf(apps.getFid())));
-                  
-                 });
-               }
-       
-           });  
+
+    public List<Jobs> getJobList() {
+        return jobList;
+    }
+
+    public void setJobList(List<Jobs> jobList) {
+        this.jobList = jobList;
     }
     
+    @PostConstruct
+    public void init(){
+        HttpServletRequest req = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
+        Long jobid = Long.parseLong(req.getParameter("jobid"));
+        setAssignJobModelList(new ArrayList<>());
+        List<Jobapps> jobAppsList = jobsSvcImpl.getFreelancersByJobId(new Jobs(jobid));
+            for( Jobapps apps : jobAppsList){
+                if( apps.getJobid().getJobid().compareTo(jobid) == 0){
+                    getAssignJobModelList().add(new AssignJobModel( String.valueOf(apps.getJobid().getJobid()), apps.getJobid().getTitle(), 
+                      apps.getJobid().getDescription(), apps.getJobid().getJobstatus(), String.valueOf(apps.getFid().getUid()), apps.getFid().getUsers().getFirstname()));
+                }
+            }
+    }
 }

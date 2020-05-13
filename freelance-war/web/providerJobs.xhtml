@@ -29,7 +29,9 @@
 
                     <h:column>
                         <f:facet name="header">Job ID</f:facet>
-                        <h:link value="#{job.jobid}" outcome="assignJob" onclick="#{jobsDisp.onClickJobId(job.jobid)}" disabled="#{job.isDisable}"/>
+                        <h:link value="#{job.jobid}" outcome="assignJob" disabled="#{job.isDisable}">
+                            <f:param  name="jobid" value="#{job.jobid}" /> 
+                        </h:link>
                     </h:column>
 
                     <h:column>
