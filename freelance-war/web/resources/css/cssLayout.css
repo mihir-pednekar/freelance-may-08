@@ -26,4 +26,11 @@
     text-align: center;
 }
 
+.searchSelect{
+    margin-top: 0px;
+    padding: 0px;
+}
 
+.searchSelect td{
+    text-align: center;
+}

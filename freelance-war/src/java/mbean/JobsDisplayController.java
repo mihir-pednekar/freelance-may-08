@@ -13,6 +13,8 @@ import entities.Jobs;
 import entities.Provider;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 import javax.annotation.ManagedBean;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
@@ -35,13 +37,16 @@ public class JobsDisplayController implements Serializable {
     private List<Jobs> jobsList=new ArrayList<>();
     private List<Jobs> fJobsList;
     private List<JobsModel> jobModelList=new ArrayList<>();
+    int filterCase;
+    private String searchStr;
 
    // private boolean disable=true;
     
     
     public JobsDisplayController() {
+        filterCase = 0;
+        searchStr = "";
         jobsSvcImpl = new JobsSvcImpl();
-        getAllOpenJobs();
         getJobsByProv();
       //List<Jobs> listOfJobs = getJobsByProv();
       //setJobsList(listOfJobs);
@@ -53,6 +58,22 @@ public class JobsDisplayController implements Serializable {
 
     public void setfJobsList(List<Jobs> fJobsList) {
         this.fJobsList = fJobsList;
+    }
+
+    public int getFilterCase() {
+        return filterCase;
+    }
+
+    public void setFilterCase(int filterCase) {
+        this.filterCase = filterCase;
+    }
+
+    public String getSearchStr() {
+        return searchStr;
+    }
+
+    public void setSearchStr(String searchStr) {
+        this.searchStr = searchStr;
     }
 
  
@@ -75,10 +96,6 @@ public class JobsDisplayController implements Serializable {
     
     public void getAllJobs(){
         jobsList = getJobsSvcImpl().getAllJobs();
-    }
-    
-    public void getAllOpenJobs(){
-        fJobsList = jobsSvcImpl.getAllOpenJobs();
     }
 
     public List<JobsModel> getJobModelList() {
@@ -123,10 +140,46 @@ public class JobsDisplayController implements Serializable {
         });  
         
     }
-     
+    
     public List<Jobs> displayAllJobs()
     {
         jobsList = getJobsSvcImpl().getAllJobs();
         return jobsList;
+    }
+    
+    public String getRegisterButtonValue(long jobid){
+        HttpSession session = SessionUtils.getSession();
+        Long userid= (Long) session.getAttribute("user_id");
+        for(Jobs job: fJobsList){
+            if(job.getJobid() == jobid){
+                if(job.getFreelancerList().stream().anyMatch(free -> Objects.equals(free.getUid(), userid))){
+                    return "De-Register";
+                }
+                else{
+                    return "Register";
+                }
+            }
+        }
+        return null;
+    }
+    
+    public void toggleRegistrationForJob(long jobid){
+        HttpSession session = SessionUtils.getSession();
+        Long userid= (Long) session.getAttribute("user_id");
+
+        jobsSvcImpl.toggleUserRegistrationForJob(jobid, userid);
+    }
+    
+    public void refreshFJobsList(){
+        List<Jobs> openJobsList = jobsSvcImpl.getAllOpenJobs();
+        switch(filterCase){
+            case 1:
+                fJobsList = openJobsList.stream().filter(j -> Objects.equals(j.getJobid().toString(), searchStr)).collect(Collectors.toList());
+                break;// ID
+            case 2:
+                fJobsList = openJobsList.stream().filter(j -> j.getSkills().toLowerCase().contains(searchStr.toLowerCase())).collect(Collectors.toList());
+                break;// Key
+            default: fJobsList = openJobsList; break;
+        }
     }
 }

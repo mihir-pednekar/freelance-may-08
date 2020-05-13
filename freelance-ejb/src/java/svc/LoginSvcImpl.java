@@ -5,6 +5,7 @@
  */
 package svc;
 
+import constants.SqlQueryConstants;
 import dao.PersistenceUnitConnec;
 import dao.UsersDao;
 import entities.Users;
@@ -65,6 +66,28 @@ public class LoginSvcImpl implements LoginSvc {
         }
         finally{
             if(em != null){
+                em.close();
+            }
+            System.gc();
+        }
+        return success;
+    }
+    
+    
+    public boolean merge(Object obj) {
+        boolean success = false;
+        try{
+            em = PersistenceUnitConnec.createEntityManager(SqlQueryConstants.PERSIST_UNIT);
+            em.getTransaction().begin();
+            em.merge(obj);
+            em.getTransaction().commit();
+            success = true;
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+        finally{
+            if(em != null && em.isOpen()){
                 em.close();
             }
             System.gc();

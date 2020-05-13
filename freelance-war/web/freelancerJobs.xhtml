@@ -4,8 +4,11 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:ez="http://xmlns.jcp.org/jsf/composite/ezcomp"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
+    <f:metadata>
+        <f:event type="preRenderView" listener="#{jobsDisp.refreshFJobsList()}"/>
+    </f:metadata>
     <h:head>
         <title>Freelancer Jobs</title>
     </h:head>
@@ -20,6 +23,23 @@
             </ui:define>
             <ui:define name="content">
                 <h:form>
+                    <table>
+                        <tr>
+                            <td colspan="2">
+                                <h:inputText value="#{jobsDisp.searchStr}"/>
+                            </td>
+                            <td colspan="1">
+                                <h:commandButton value="Go"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <h:selectOneRadio style="padding: 0px; margin-top:0px;" class="searchSelect" value = "#{jobsDisp.filterCase}"> 
+                                <f:selectItem itemValue = "0" itemLabel = "All"/>
+                                <f:selectItem itemValue = "1" itemLabel = "Id"/> 
+                                <f:selectItem itemValue = "2" itemLabel = "Key"/>
+                            </h:selectOneRadio> 
+                        </tr>
+                    </table>
                     <h:dataTable value='#{jobsDisp.fJobsList}' var='job' border="1" cellpadding="5">
 
                         <h:column>
@@ -46,6 +66,11 @@
 	                    <h:column>
 	                        <f:facet name="header">DateTime</f:facet>
 	                        #{job.createdby.users.regDate}
+	                    </h:column>
+                        
+	                    <h:column>
+	                        <f:facet name="header">Action</f:facet>
+                                <h:commandButton value="#{jobsDisp.getRegisterButtonValue(job.jobid)}" action="#{jobsDisp.toggleRegistrationForJob(job.jobid)}"/>
 	                    </h:column>
 
                     </h:dataTable>

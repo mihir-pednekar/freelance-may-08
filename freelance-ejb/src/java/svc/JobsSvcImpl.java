@@ -14,6 +14,7 @@ import entities.Jobs;
 import entities.Provider;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
@@ -137,5 +138,40 @@ public class JobsSvcImpl implements JobsSvc{
             System.gc();
         }
         return jobAppsList;
+    }
+    
+    @Override
+    public void toggleUserRegistrationForJob(long jobid, long userid){
+        try{
+            em = PersistenceUnitConnec.createEntityManager(SqlQueryConstants.PERSIST_UNIT);
+            
+            Query query = em.createNamedQuery("Jobs.findByJobid");
+            query.setParameter("jobid", jobid);
+            Jobs job = (Jobs) query.getSingleResult();
+            
+            List<Freelancer> freelancerList = job.getFreelancerList();
+            if(freelancerList.removeIf(freelancer -> Objects.equals(freelancer.getUid(), userid))){
+            }
+            else{
+                query = em.createNamedQuery("Freelancer.findByUid");
+                query.setParameter("uid", userid);
+                Freelancer freelancer = (Freelancer) query.getSingleResult();
+                job.getFreelancerList().add(freelancer);
+            }
+            
+            em.getTransaction().begin();
+            em.merge(job);
+            em.getTransaction().commit();
+        }
+        catch(Exception ex){
+            System.err.print(ex);
+        }
+        finally{
+            if(em != null && em.isOpen())
+                em.close();
+            System.gc();
+        }
+        
+        
     }
 }

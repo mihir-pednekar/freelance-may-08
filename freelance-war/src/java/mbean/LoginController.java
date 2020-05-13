@@ -153,7 +153,7 @@ public class LoginController implements Serializable {
     }
     
     public void updateFreelancerProfile(){
-        
+        loginSvcImpl.merge(currentUser);
     }
     
     //Current User getters and setters
@@ -189,6 +189,4 @@ public class LoginController implements Serializable {
     public String getMessage(){
         return this.currentUser.getFreelancer().getMessage();
     }
-    
-    
 }

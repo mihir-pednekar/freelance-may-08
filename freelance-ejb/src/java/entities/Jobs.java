@@ -8,6 +8,7 @@ package entities;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -17,6 +18,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -39,6 +41,9 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Jobs.findByPayment", query = "SELECT j FROM Jobs j WHERE j.payment = :payment")
     , @NamedQuery(name = "Jobs.findByJobstatus", query = "SELECT j FROM Jobs j WHERE j.jobstatus = :jobstatus")})
 public class Jobs implements Serializable {
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "jobid")
+    private List<Jobapps> jobappsList;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -194,6 +199,15 @@ public class Jobs implements Serializable {
     @Override
     public String toString() {
         return "entities.Jobs[ jobid=" + jobid + " ]";
+    }
+
+    @XmlTransient
+    public List<Jobapps> getJobappsList() {
+        return jobappsList;
+    }
+
+    public void setJobappsList(List<Jobapps> jobappsList) {
+        this.jobappsList = jobappsList;
     }
     
 }

@@ -18,7 +18,7 @@ public interface JobsSvc {
     public List<Jobs> getAllJobs();
     public List<Jobs> getJobsByProv(Provider userid);
     public List<Jobapps> getFreelancersByJobId(Jobs userid);
-    
+    public void toggleUserRegistrationForJob(long jobid, long userid);
 
 
 }

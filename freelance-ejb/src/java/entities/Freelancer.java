@@ -8,6 +8,7 @@ package entities;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -36,6 +37,9 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Freelancer.findBySkills", query = "SELECT f FROM Freelancer f WHERE f.skills = :skills")
     , @NamedQuery(name = "Freelancer.findByMessage", query = "SELECT f FROM Freelancer f WHERE f.message = :message")})
 public class Freelancer implements Serializable {
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "fid")
+    private List<Jobapps> jobappsList;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -143,6 +147,15 @@ public class Freelancer implements Serializable {
     @Override
     public String toString() {
         return "entities.Freelancer[ uid=" + uid + " ]";
+    }
+
+    @XmlTransient
+    public List<Jobapps> getJobappsList() {
+        return jobappsList;
+    }
+
+    public void setJobappsList(List<Jobapps> jobappsList) {
+        this.jobappsList = jobappsList;
     }
     
 }

@@ -64,5 +64,4 @@ public class UsersSvcImpl implements UsersSvc{
         }
        return providersList;
     }
-    
 }

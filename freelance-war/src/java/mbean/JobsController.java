@@ -125,6 +125,9 @@ public class JobsController implements Serializable {
         this.acceptedby = acceptedby;
     }
 
+    public String getRegisterButtonValue(){
+        return "Test";
+    }
     
     
     public String addNewJob(){ 
