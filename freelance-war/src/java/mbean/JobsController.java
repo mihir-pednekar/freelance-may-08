@@ -13,6 +13,7 @@ import java.io.Serializable;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Timestamp;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
@@ -124,11 +125,22 @@ public class JobsController implements Serializable {
     public void setAcceptedby(Long acceptedby) {
         this.acceptedby = acceptedby;
     }
-
-    public String getRegisterButtonValue(){
-        return "Test";
+    
+    @PostConstruct
+    public void init(){
+        
     }
     
+    private void clearForm(){
+        this.setAcceptedby(null);
+        this.setCreatedby(null);
+        this.setDescription("");
+        this.setJobid(null);
+        this.setJobstatus("");
+        this.setPayment(0);
+        this.setSkills("");
+        this.setTitle("");
+    }
     
     public String addNewJob(){ 
         Timestamp tstamp = new Timestamp(System.currentTimeMillis());
@@ -138,6 +150,7 @@ public class JobsController implements Serializable {
         Long createdby=(Long) session.getAttribute("user_id");
         Jobs jobObj = new Jobs(jobID, title, skills, description, payment, jobstatus,new Provider(createdby));
         jobsSvcImpl.persist(jobObj);
-        return "providerJobs";
+        this.clearForm();
+        return "providerJobs?faces-redirect=true";
     } 
 }

@@ -20,7 +20,7 @@
             <ui:define name="content">
             <h:form>
            
-                    <h:commandButton label="add Job" value="add Job" action="jobRegistration"/>
+                    <h:commandButton label="add Job" value="add Job" action="jobRegistration?faces-redirect=true"/>
                            
                     <h:dataTable value='#{jobsDisp.jobModelList}' var='job' border="1" cellpadding="5">
 
