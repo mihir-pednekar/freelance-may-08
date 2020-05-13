@@ -12,4 +12,6 @@ package com.constants;
 public class ValidationConstants {
     public static final String INVALID_USER = "Username or password might be invalid";
     public static final String REQ_VALID_USER_PASS = "Please enter correct username and Password";
+    public static final String FAILED_DELETE = "Cannot Perform: Delete Operation.";
+
 }

@@ -141,6 +141,26 @@ public class JobsSvcImpl implements JobsSvc{
     }
     
     @Override
+    public void deleteJobsByJid(Long jid) {
+        try{
+            em = PersistenceUnitConnec.createEntityManager(SqlQueryConstants.PERSIST_UNIT);
+           // System.out.println("Deleting deleteJobsByJid jobid : "+jid);
+            Jobs job=em.find(Jobs.class, jid);
+            em.getTransaction().begin();
+            em.remove(job);
+            em.getTransaction().commit();
+
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+        finally{
+            if(em != null){
+                em.close();
+            }
+            System.gc();
+        }     
+    }   
     public void toggleUserRegistrationForJob(long jobid, long userid){
         try{
             em = PersistenceUnitConnec.createEntityManager(SqlQueryConstants.PERSIST_UNIT);

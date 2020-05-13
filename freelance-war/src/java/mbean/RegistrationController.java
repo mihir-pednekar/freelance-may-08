@@ -15,7 +15,9 @@ import java.sql.Timestamp;
 import java.util.Date;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
+import javax.servlet.http.HttpSession;
 import svc.LoginSvcImpl;
+import utils.SessionUtils;
 
 
 @Named(value = "regCtrl")
@@ -138,6 +140,11 @@ public class RegistrationController{
             fr.setUsers(usersObj);     
         }
         loginSvcImpl.persist(usersObj);
+        HttpSession session = SessionUtils.getSession();
+        String sessionrole= (String) session.getAttribute("user_role");        
+        if(sessionrole.equalsIgnoreCase("admin"))
+            return "adminHome";
+        
         return "index";
     }
     public String addProvider() throws NoSuchAlgorithmException{

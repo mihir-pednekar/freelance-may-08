@@ -12,7 +12,7 @@ package model;
 public class ProviderModel extends UsersModel{
     private String pid, firstName, lastName, username, role, regDate, amount;
 
-    public ProviderModel(String pid,String firstName, String lastName, String username, String role, String regDate, String amount) {
+    public ProviderModel(String pid, String firstName, String lastName, String username, String role, String regDate, String amount) {
         this.pid=pid;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -20,6 +20,14 @@ public class ProviderModel extends UsersModel{
         this.role = role;
         this.regDate = regDate;
         this.amount = amount;
+    }
+
+    public String getPid() {
+        return pid;
+    }
+
+    public void setPid(String pid) {
+        this.pid = pid;
     }
 
     public String getFirstName() {

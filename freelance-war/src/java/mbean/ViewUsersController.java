@@ -6,8 +6,11 @@ import java.util.List;
 import javax.annotation.ManagedBean;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.ejb.PostActivate;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
+import javax.persistence.PostLoad;
+import javax.persistence.PostUpdate;
 import model.FreelancerModel;
 import model.ProviderModel;
 import svc.JobsSvcImpl;
@@ -98,6 +101,7 @@ public class ViewUsersController
     
     public List<FreelancerModel> getAllFreelancers()
     {  
+       freelancerModelList=new ArrayList<>();
        List<Freelancer> temp= allUsersSvcImpl.fetchAllFreelancers();
         //setFreelancerList(temp);
         temp.forEach((f)->{ 
@@ -109,12 +113,13 @@ public class ViewUsersController
         return freelancerModelList;
     }
     
+    
     public List<ProviderModel> getAllProviders()
     {
-       // providerList=new ArrayList<>();
+       providerModelList=new ArrayList<>();
        List<Provider> temp =allUsersSvcImpl.getAllProviders();
         temp.forEach((p)->{
-        ProviderModel pModel=new ProviderModel(String.valueOf(p.getPid()),p.getUsers().getFirstname(),p.getUsers().getLastname(),p.getUsers().getUsername(),p.getUsers().getUserRole(),String.valueOf(p.getUsers().getRegDate()),String.valueOf(p.getAmount()));
+        ProviderModel pModel=new ProviderModel(String.valueOf(p.getUsers().getId()),p.getUsers().getFirstname(),p.getUsers().getLastname(),p.getUsers().getUsername(),p.getUsers().getUserRole(),String.valueOf(p.getUsers().getRegDate()),String.valueOf(p.getAmount()));
         
         if(!providerModelList.contains(pModel))
         {

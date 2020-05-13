@@ -1,10 +1,12 @@
 
 package mbean;
-
 import javax.annotation.ManagedBean;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
+import javax.persistence.PostRemove;
+import svc.JobsSvcImpl;
 import svc.UsersSvcImpl;
 
 
@@ -13,10 +15,32 @@ import svc.UsersSvcImpl;
 @ManagedBean
 public class RemoveUserController {
 
-     @EJB
+    @EJB
     private UsersSvcImpl allUsersSvcImpl;
+    
+    @EJB
+    private JobsSvcImpl jobsSvcImpl;
      
-    public RemoveUserController() {
+    public RemoveUserController() 
+    {
     }
+   
+   
+    public void deleteProviderByID(Long pid)
+    {
+        allUsersSvcImpl.deleteProviderByID(pid);   
+    }
+    
+    
+    public void deleteFreelancerByID(Long fid)
+    {
+        allUsersSvcImpl.deleteFreelancerByID(fid);   
+    }
+    
+    public void deleteJobsByjobID(Long jid)
+    {
+        jobsSvcImpl.deleteJobsByJid(jid);   
+    }
+       
     
 }
