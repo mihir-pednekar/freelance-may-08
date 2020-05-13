@@ -25,7 +25,7 @@ import utils.SessionUtils;
 
 
 @Named(value = "jobsDisp")
-@SessionScoped
+@RequestScoped
 @ManagedBean
 public class JobsDisplayController implements Serializable {
 
@@ -105,7 +105,21 @@ public class JobsDisplayController implements Serializable {
     public void setJobModelList(List<JobsModel> jobModelList) {
         this.jobModelList = jobModelList;
     }
-        
+
+	@PostConstruct
+    public void init(){
+        //after constructor call
+        HttpSession session = SessionUtils.getSession();
+        Long userid= (Long) session.getAttribute("user_id");
+        String userrole= (String) session.getAttribute("user_role");
+        if(userrole.compareTo("provider") == 0){
+            getJobsByProv(userid);
+        }
+        if(userrole.compareTo("freelancer") == 0){
+            getAllOpenJobs();
+        }
+    }
+	
     public void getJobsByProv(){
         HttpSession session = SessionUtils.getSession();
         Long userid= (Long) session.getAttribute("user_id");
@@ -131,19 +145,30 @@ public class JobsDisplayController implements Serializable {
     }
     
     public void onClickJobId(String jobId)
-    {
-        jobModelList.forEach((um) -> {
-        if(um.getJobid().compareTo(jobId)==0)
-        {
-            um.setIsClicked(true);
-        }
-        });  
+    {//provider
+        HttpSession session = SessionUtils.getSession();
+        String userrole= (String) session.getAttribute("user_role");
         
+        if(userrole.compareTo("provider") == 0){
+            jobModelList.forEach((um) -> {
+            if(um.getJobid().compareTo(jobId)==0)
+            {
+                um.setIsClicked(true);
+            }
+            });  
+        }
+           
     }
     
     public List<Jobs> displayAllJobs()
-    {
-        jobsList = getJobsSvcImpl().getAllJobs();
+    {//for ADMIN
+        HttpSession session = SessionUtils.getSession();
+        String userrole= (String) session.getAttribute("user_role");
+        
+        if(userrole.compareTo("admin") == 0){
+            jobsList = getJobsSvcImpl().getAllJobs();
+        }
+        
         return jobsList;
     }
     
