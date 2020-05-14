@@ -13,6 +13,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 import svc.LoginSvcImpl;
+import svc.UsersSvcImpl;
 import utils.SessionUtils;
 
 
@@ -29,6 +30,8 @@ public class LoginController implements Serializable {
 
     @EJB
     private LoginSvcImpl loginSvcImpl;
+    @EJB
+    private UsersSvcImpl usersSvcImpl;
     private String user;
     private String passwd;
     private String role;
@@ -98,6 +101,10 @@ public class LoginController implements Serializable {
             return "index";
         }
         return null;
+    }
+    
+    public void refreshCurrentUser(){
+        this.currentUser =  usersSvcImpl.getUserById(this.getUserId());
     }
 
     private void sendJMSMessageToFreelanceDestQueue(String messageData) {

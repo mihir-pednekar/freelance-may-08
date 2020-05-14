@@ -248,4 +248,41 @@ public class JobsSvcImpl implements JobsSvc{
         return success;
     }
 
+    @Override
+    public void completeJobAndPay(Long jobid) {
+        try{
+            em = PersistenceUnitConnec.createEntityManager(SqlQueryConstants.PERSIST_UNIT);
+           // System.out.println("Deleting deleteJobsByJid jobid : "+jid);
+            Jobs job=em.find(Jobs.class, jobid);
+            em.getTransaction().begin();
+            Freelancer freelancer = job.getAcceptedby();
+            int freelancerBalance = 0;
+            int providerBalance = 0;
+            int jobPayment = job.getPayment();
+            if(freelancer.getAmount() != null){
+                freelancerBalance = freelancer.getAmount();
+            }
+            Provider provider = job.getCreatedby();
+            if(provider.getAmount() != null){
+                providerBalance = provider.getAmount();
+            }
+            provider.setAmount(providerBalance - jobPayment);
+            freelancer.setAmount(freelancerBalance + jobPayment);
+            job.setJobstatus("Completed");
+            em.merge(job);
+            em.merge(provider);
+            em.getTransaction().commit();
+
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+        finally{
+            if(em != null){
+                em.close();
+            }
+            System.gc();
+        }  
+    }
+
 }

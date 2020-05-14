@@ -51,8 +51,16 @@
                         #{job.jobstatus}
                     </h:column>
                     <h:column>
+                        <f:facet name="header">Assigned To</f:facet>
+                        #{job.acceptedBy}
+                    </h:column>
+                    <h:column>
                         <f:facet name="header">Action</f:facet>
-                        <h:commandButton label="Remove Job" value="Remove Job" action="#" disabled="#{job.isDisable}" />
+                        <h:commandButton label="Remove Job" value="Remove Job" action="#{jobsDisp.removeJob(job.jobid)}" disabled="#{job.isDisable}" />
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Action</f:facet>
+                        <h:commandButton label="Mark Completed" value="Mark Completed" action="#{jobsDisp.completeJob(job.jobid)}" disabled="#{job.isComDisabled}" />
                     </h:column>
 
                 </h:dataTable>

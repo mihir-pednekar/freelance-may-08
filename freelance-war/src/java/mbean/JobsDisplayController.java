@@ -11,6 +11,7 @@ import javax.ejb.EJB;
 import svc.JobsSvcImpl;
 import entities.Jobs;
 import entities.Provider;
+import entities.Users;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -21,6 +22,7 @@ import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
 import javax.servlet.http.HttpSession;
 import model.JobsModel;
+import svc.UsersSvcImpl;
 import utils.SessionUtils;
 
 
@@ -34,6 +36,8 @@ public class JobsDisplayController implements Serializable {
      */
     @EJB
     private JobsSvcImpl jobsSvcImpl;
+    @EJB
+    private UsersSvcImpl usersSvcImpl;
     private List<Jobs> jobsList=new ArrayList<>();
     private List<Jobs> fJobsList;
     private List<JobsModel> jobModelList=new ArrayList<>();
@@ -127,13 +131,28 @@ public class JobsDisplayController implements Serializable {
         //return jobsList;
         
          this.getJobsList().forEach((um) -> {
-         JobsModel model=new JobsModel(String.valueOf(um.getJobid()), um.getTitle(), um.getSkills(), um.getDescription(), String.valueOf(um.getPayment()), um.getJobstatus(), String.valueOf(um.getCreatedby()));
+             String acceptedBy = "-";
+             if(um.getAcceptedby() != null){
+                 Users user = um.getAcceptedby().getUsers();
+                 if(user == null){
+                    user = usersSvcImpl.getUserById(um.getAcceptedby().getUid());
+                 }
+                 acceptedBy = user.getFirstname() + " " + user.getLastname();
+             }
+         JobsModel model=new JobsModel(String.valueOf(um.getJobid()), um.getTitle(), um.getSkills(), um.getDescription(), String.valueOf(um.getPayment()), um.getJobstatus(), String.valueOf(um.getCreatedby()), acceptedBy);
                 if(um.getJobstatus().toUpperCase().contains("OPEN"))
                 {
                    model.setIsDisable(false);
+                   model.setIsComDisabled(true);
                 }
-                else
+                else if(um.getJobstatus().toUpperCase().contains("CLOSED")){
+                   model.setIsComDisabled(false);
                    model.setIsDisable(true);
+                }
+                else{
+                   model.setIsDisable(true);
+                   model.setIsComDisabled(true);
+                }
                 getJobModelList().add(model);
                 this.setJobModelList(this.getJobModelList());
 
@@ -205,5 +224,13 @@ public class JobsDisplayController implements Serializable {
                 break;// Key
             default: fJobsList = openJobsList; break;
         }
+    }
+    
+    public void removeJob(long jobid){
+        jobsSvcImpl.deleteJobsByJid(jobid);
+    }
+    
+    public void completeJob(long jobid){
+        jobsSvcImpl.completeJobAndPay(jobid);
     }
 }

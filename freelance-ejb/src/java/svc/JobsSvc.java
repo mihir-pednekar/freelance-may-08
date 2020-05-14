@@ -22,6 +22,5 @@ public interface JobsSvc {
     public Freelancer getFreelancersById(Freelancer userid);
     public void deleteJobsByJid(Long jid);
     public boolean assignFreelancerToJobId(String jobid, String freelancerIDs, String jobStatus);
-
-
+    public void completeJobAndPay(Long jobid);
 }

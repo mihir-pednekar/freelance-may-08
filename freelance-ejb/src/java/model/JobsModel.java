@@ -1,8 +1,24 @@
 package model;
 public class JobsModel {
-    private String jobid, title, skills, description, payment,jobstatus,createdby;
-    private boolean isDisable=false, isClicked=false;
+    private String jobid, title, skills, description, payment,jobstatus,createdby, acceptedBy;
+    private boolean isDisable=false, isClicked=false, isComDisabled = true;
 
+    public String getAcceptedBy() {
+        return acceptedBy;
+    }
+
+    public void setAcceptedBy(String acceptedBy) {
+        this.acceptedBy = acceptedBy;
+    }
+
+    public boolean getIsComDisabled() {
+        return isComDisabled;
+    }
+
+    public void setIsComDisabled(boolean isComDisabled) {
+        this.isComDisabled = isComDisabled;
+    }
+    
     public boolean isIsDisable() {
         return isDisable;
     }
@@ -23,7 +39,7 @@ public class JobsModel {
     public JobsModel() {
     }
 
-    public JobsModel(String jobid, String title, String skills, String description, String payment, String jobstatus, String createdby) {
+    public JobsModel(String jobid, String title, String skills, String description, String payment, String jobstatus, String createdby, String acceptedBy) {
         this.jobid = jobid;
         this.title = title;
         this.skills = skills;
@@ -31,6 +47,7 @@ public class JobsModel {
         this.payment = payment;
         this.jobstatus = jobstatus;
         this.createdby = createdby;
+        this.acceptedBy = acceptedBy;
     }
 
     public String getJobid() {

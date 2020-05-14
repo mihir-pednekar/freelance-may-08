@@ -2,6 +2,7 @@ package svc;
 
 import constants.SqlQueryConstants;
 import dao.PersistenceUnitConnec;
+import entities.Users;
 import entities.Freelancer;
 import entities.Provider;
 import java.util.ArrayList;
@@ -132,6 +133,22 @@ public class UsersSvcImpl implements UsersSvc {
             }
             System.gc();
         }
+    }
+    @Override
+    public Users getUserById(Long id){
+        Users user = null;
+        try{
+        em = PersistenceUnitConnec.createEntityManager(SqlQueryConstants.PERSIST_UNIT);
+        user = em.find(Users.class, id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (em != null) {
+                em.close();
+            }
+            System.gc();
+        }
+        return user;
     }
 
 }
