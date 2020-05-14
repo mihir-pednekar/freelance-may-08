@@ -39,7 +39,7 @@ import javax.xml.bind.annotation.XmlTransient;
 public class Freelancer implements Serializable {
 
     @Column(name = "amount")
-    private Integer amount;
+    private Integer amount = 0;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "fid")
     private List<Jobapps> jobappsList;

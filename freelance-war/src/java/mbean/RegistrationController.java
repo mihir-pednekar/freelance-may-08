@@ -49,7 +49,7 @@ public class RegistrationController{
     }
 
     public void setUsername(String username) {
-        this.username = username;
+        this.username = username.toLowerCase();
     }
 
     public String getPassword() {
@@ -142,7 +142,7 @@ public class RegistrationController{
         loginSvcImpl.persist(usersObj);
         HttpSession session = SessionUtils.getSession();
         String sessionrole= (String) session.getAttribute("user_role");        
-        if(sessionrole.equalsIgnoreCase("admin"))
+        if(sessionrole != null && sessionrole.equalsIgnoreCase("admin"))
             return "adminHome";
         
         return "index";

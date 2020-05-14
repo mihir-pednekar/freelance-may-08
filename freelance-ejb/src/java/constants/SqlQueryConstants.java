@@ -22,6 +22,7 @@ public class SqlQueryConstants {
     public static final String FETCH_FREELANCERS_BY_ID = "SELECT f FROM Freelancer f WHERE f.uid = :uid";
     public static final String FETCH_ALL_PROVIDERS = "SELECT p FROM Provider p";
     public static final String FETCH_ALL_FREELANCERS = "SELECT f FROM Freelancer f";
+    public static final String FETCH_ALL_USERNAMES = "SELECT u.username FROM Users u";
     
     public static final String DELETE_PROVIDER_BY_ID="DELETE FROM Provider p WHERE p.pid = :pid";
     public static final String DELETE_FREELANCER_BY_ID="DELETE FROM Freelancer f WHERE f.uid = :uid";

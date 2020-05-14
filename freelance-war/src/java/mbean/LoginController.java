@@ -49,7 +49,7 @@ public class LoginController implements Serializable {
     }
 
     public void setUser(String user) {
-        this.user = user;
+        this.user = user.toLowerCase();
     }
 
     public String getPasswd() {
@@ -191,9 +191,15 @@ public class LoginController implements Serializable {
         return this.currentUser.getFreelancer().getMessage();
     }
     public int getFreelancerAmount(){
-        return this.currentUser.getFreelancer().getAmount();
+        if(this.currentUser.getFreelancer().getAmount() == null)
+            return 0;
+        else
+            return this.currentUser.getFreelancer().getAmount();
     }
     public int getProviderAmount(){
-        return this.currentUser.getProvider().getAmount();
+        if(this.currentUser.getProvider().getAmount() == null)
+            return 0;
+        else
+            return this.currentUser.getProvider().getAmount();
     }
 }

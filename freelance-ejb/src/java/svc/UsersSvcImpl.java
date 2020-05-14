@@ -90,6 +90,24 @@ public class UsersSvcImpl implements UsersSvc {
             System.gc();
         }
     }
+    
+    public List<String> getAllUsernames(){
+        List<String> usernames = null;
+        try{
+        em = PersistenceUnitConnec.createEntityManager(SqlQueryConstants.PERSIST_UNIT);
+        em.getTransaction().begin();
+        Query query = em.createQuery(SqlQueryConstants.FETCH_ALL_USERNAMES);
+        usernames = query.getResultList();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (em != null) {
+                em.close();
+            }
+            System.gc();
+        }
+        return usernames;
+    }
 
     @Override
     public void deleteProviderByID(Long pid) {
