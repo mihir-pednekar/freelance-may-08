@@ -38,6 +38,9 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Freelancer.findByMessage", query = "SELECT f FROM Freelancer f WHERE f.message = :message")})
 public class Freelancer implements Serializable {
 
+    @Column(name = "amount")
+    private Integer amount;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "fid")
     private List<Jobapps> jobappsList;
 
@@ -156,6 +159,14 @@ public class Freelancer implements Serializable {
 
     public void setJobappsList(List<Jobapps> jobappsList) {
         this.jobappsList = jobappsList;
+    }
+
+    public Integer getAmount() {
+        return amount;
+    }
+
+    public void setAmount(Integer amount) {
+        this.amount = amount;
     }
     
 }

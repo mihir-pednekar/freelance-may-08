@@ -190,4 +190,10 @@ public class LoginController implements Serializable {
     public String getMessage(){
         return this.currentUser.getFreelancer().getMessage();
     }
+    public int getFreelancerAmount(){
+        return this.currentUser.getFreelancer().getAmount();
+    }
+    public int getProviderAmount(){
+        return this.currentUser.getProvider().getAmount();
+    }
 }
