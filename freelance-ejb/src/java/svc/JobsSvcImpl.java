@@ -83,7 +83,7 @@ public class JobsSvcImpl implements JobsSvc{
         try{
             em = PersistenceUnitConnec.createEntityManager(SqlQueryConstants.PERSIST_UNIT);
             Query query = em.createQuery(SqlQueryConstants.FETCH_JOBS_BY_STATUS);
-            query.setParameter("jobstatus", "open");
+            query.setParameter("jobstatus", "Open");
             jobsList = query.getResultList();
         }
         catch(Exception e){
@@ -220,6 +220,32 @@ public class JobsSvcImpl implements JobsSvc{
         }
         
         
+    }
+
+    @Override
+    public boolean assignFreelancerToJobId(String jobid, String freelancerIDs, String jobStatus) {
+        boolean success = false;
+        Long jobId = Long.parseLong(jobid);
+        em = PersistenceUnitConnec.createEntityManager(SqlQueryConstants.PERSIST_UNIT);
+        Jobs job = em.find(Jobs.class, jobId );
+        Query query = em.createQuery(SqlQueryConstants.DELETE_JOBAPPS_BY_JOBID);
+        query.setParameter("jobid", new Jobs(jobId));
+        em.getTransaction().begin();
+        if(job != null){
+            job.setAcceptedby(new Freelancer(Long.parseLong(freelancerIDs)));
+            job.setJobstatus("Closed");
+            int deletedCount = query.executeUpdate();
+            if( deletedCount <= 0 ){
+                em.getTransaction().rollback();
+            }
+        }else{
+            em.getTransaction().rollback();
+        }
+        em.getTransaction().commit();
+        success = true;
+        em.close();
+        
+        return success;
     }
 
 }
