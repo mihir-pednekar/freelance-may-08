@@ -19,6 +19,7 @@ public class SqlQueryConstants {
     public static final String FETCH_JOBS_BY_STATUS = "SELECT j FROM Jobs j WHERE j.jobstatus = :jobstatus";
     
     public static final String FETCH_FREELANCERS_BY_JOBID = "SELECT a FROM Jobapps a WHERE a.jobid = :jobid";
+    public static final String FETCH_FREELANCERS_BY_ID = "SELECT f FROM Freelancer f WHERE f.uid = :uid";
     public static final String FETCH_ALL_PROVIDERS = "SELECT p FROM Provider p";
     public static final String FETCH_ALL_FREELANCERS = "SELECT f FROM Freelancer f";
     

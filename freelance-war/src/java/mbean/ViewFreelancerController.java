@@ -1,69 +1,44 @@
 package mbean;
 import entities.Freelancer;
-import java.util.List;
 import javax.annotation.ManagedBean;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletRequest;
 import model.FreelancerModel;
 import svc.JobsSvcImpl;
 
-@Named(value = "viewFreelancerCont")
+@Named(value = "viewFreeCtrl")
 @RequestScoped
 @ManagedBean
 public class ViewFreelancerController 
 {
     @EJB
     private JobsSvcImpl jobsSvcImpl;
-    private List<Freelancer> freelancerList;
-    private List<FreelancerModel> freelancerModelList;
+    private FreelancerModel free;
     
     public ViewFreelancerController() {
     }
 
-    public JobsSvcImpl getJobsSvcImpl() {
-        return jobsSvcImpl;
+    public FreelancerModel getFree() {
+        return free;
     }
 
-    public void setJobsSvcImpl(JobsSvcImpl jobsSvcImpl) {
-        this.jobsSvcImpl = jobsSvcImpl;
+    public void setFree(FreelancerModel free) {
+        this.free = free;
     }
 
-    public List<Freelancer> getFreelancerList() {
-        return freelancerList;
-    }
-
-    public void setFreelancerList(List<Freelancer> freelancerList) {
-        this.freelancerList = freelancerList;
-    }
-
-    public List<FreelancerModel> getFreelancerModelList() {
-        return freelancerModelList;
-    }
-
-    public void setFreelancerModelList(List<FreelancerModel> freelancerModelList) {
-        this.freelancerModelList = freelancerModelList;
-    }
-    
     @PostConstruct
-    public void getFreelancersByJobId(){
-        //HttpSession session = SessionUtils.getSession();
-         //  Long userid= (Long) session.getAttribute("user_id");
-
-        //freelancerList = jobsSvcImpl.getFreelancersByJobId());
-        
-        //this.setJobsList(jobsList);
-        //return jobsList;
-        
-         freelancerList.forEach((um) -> {
-         FreelancerModel model=new FreelancerModel(String.valueOf(um.getUid()),um.getSkills(), um.getMessage(), um.getUsers().getFirstname(), um.getUsers().getLastname(), um.getUsers().getUserRole(),um.getUsers().getUsername());
-                
-
-                //else
-                   // setDisable(false);
-
-            });  
+    public void init(){
+        HttpServletRequest req = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
+        Long userid = Long.parseLong(req.getParameter("freeid"));
+        setFree(new FreelancerModel());
+        Freelancer freeEntity = jobsSvcImpl.getFreelancersById(new Freelancer(userid));
+        FreelancerModel freeModel = new FreelancerModel( String.valueOf(freeEntity.getUid()) , freeEntity.getSkills(), freeEntity.getMessage(),
+                freeEntity.getUsers().getFirstname(), freeEntity.getUsers().getLastname(), freeEntity.getUsers().getUserRole(), freeEntity.getUsers().getUsername());
+        setFree(freeModel);
     }
     
 }

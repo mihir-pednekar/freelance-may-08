@@ -120,6 +120,33 @@ public class JobsSvcImpl implements JobsSvc{
         return jobsList;
     }    
 
+    
+    @Override
+    public Freelancer getFreelancersById(Freelancer userid) {
+        Freelancer free = null;
+        try{
+            em = PersistenceUnitConnec.createEntityManager(SqlQueryConstants.PERSIST_UNIT);
+            Query query = em.createQuery(SqlQueryConstants.FETCH_FREELANCERS_BY_ID);
+            query.setParameter("uid", userid.getUid());
+            List freelancerList = query.getResultList();
+            if( !freelancerList.isEmpty() && freelancerList!=null ){
+                free = (Freelancer) freelancerList.get(0);
+            }else{
+                throw new Exception("Invalid Freelancer ID...");
+            }
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+        finally{
+            if(em != null){
+                em.close();
+            }
+            System.gc();
+        }
+        return free;
+    }
+    
     @Override
     public List<Jobapps> getFreelancersByJobId(Jobs userid) {
         try{
@@ -194,4 +221,5 @@ public class JobsSvcImpl implements JobsSvc{
         
         
     }
+
 }

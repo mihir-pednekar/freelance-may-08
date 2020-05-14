@@ -14,12 +14,12 @@ import javax.ejb.Remote;
  */
 @Remote
 public interface JobsSvc {
-   public boolean persist(Object obj);
+    public boolean persist(Object obj);
     public List<Jobs> getAllJobs();
     public List<Jobs> getJobsByProv(Provider userid);
     public List<Jobapps> getFreelancersByJobId(Jobs userid);
     public void toggleUserRegistrationForJob(long jobid, long userid);
-    
+    public Freelancer getFreelancersById(Freelancer userid);
     public void deleteJobsByJid(Long jid);
     
 

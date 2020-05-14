@@ -25,8 +25,8 @@
             
                     <h:column>
                         <f:facet name="header">Freelance ID</f:facet>
-                        <h:link value="#{job.jobid}" outcome="viewfreelancer" target="_blank">
-                            <f:param  name="freeid" value="#{job.jobid}" /> 
+                        <h:link value="#{job.freelanceID}" outcome="viewfreelancer" target="_blank">
+                            <f:param  name="freeid" value="#{job.freelanceID}" /> 
                         </h:link>
                     </h:column>
                     <h:column>
@@ -47,7 +47,7 @@
                     </h:column>
                     <h:column>
                         <f:facet name="header">Action</f:facet>
-                        <h:commandButton label="Assign" value="Assign Freelancer" action="providerJobs?faces-redirect=true" />
+                        <h:commandButton label="Assign" value="Assign Job" action="providerJobs?faces-redirect=true" />
                     </h:column>
             </h:dataTable>
         </h:form>
