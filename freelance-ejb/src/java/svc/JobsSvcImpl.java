@@ -188,7 +188,9 @@ public class JobsSvcImpl implements JobsSvc{
             System.gc();
         }     
     }   
-    public void toggleUserRegistrationForJob(long jobid, long userid){
+    @Override
+    public boolean toggleUserRegistrationForJob(long jobid, long userid){
+        boolean registered = false;
         try{
             em = PersistenceUnitConnec.createEntityManager(SqlQueryConstants.PERSIST_UNIT);
             
@@ -198,12 +200,14 @@ public class JobsSvcImpl implements JobsSvc{
             
             List<Freelancer> freelancerList = job.getFreelancerList();
             if(freelancerList.removeIf(freelancer -> Objects.equals(freelancer.getUid(), userid))){
+                registered = false;
             }
             else{
                 query = em.createNamedQuery("Freelancer.findByUid");
                 query.setParameter("uid", userid);
                 Freelancer freelancer = (Freelancer) query.getSingleResult();
                 job.getFreelancerList().add(freelancer);
+                registered = true;
             }
             
             em.getTransaction().begin();
@@ -211,6 +215,7 @@ public class JobsSvcImpl implements JobsSvc{
             em.getTransaction().commit();
         }
         catch(Exception ex){
+            registered = false;
             System.err.print(ex);
         }
         finally{
@@ -218,7 +223,7 @@ public class JobsSvcImpl implements JobsSvc{
                 em.close();
             System.gc();
         }
-        
+        return registered;
         
     }
 

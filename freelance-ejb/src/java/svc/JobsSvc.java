@@ -18,7 +18,7 @@ public interface JobsSvc {
     public List<Jobs> getAllJobs();
     public List<Jobs> getJobsByProv(Provider userid);
     public List<Jobapps> getFreelancersByJobId(Jobs userid);
-    public void toggleUserRegistrationForJob(long jobid, long userid);
+    public boolean toggleUserRegistrationForJob(long jobid, long userid);
     public Freelancer getFreelancersById(Freelancer userid);
     public void deleteJobsByJid(Long jid);
     public boolean assignFreelancerToJobId(String jobid, String freelancerIDs, String jobStatus);

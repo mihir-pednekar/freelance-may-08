@@ -17,8 +17,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import javax.annotation.ManagedBean;
-import javax.annotation.PostConstruct;
-import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
 import javax.servlet.http.HttpSession;
 import model.JobsModel;
@@ -210,7 +208,10 @@ public class JobsDisplayController implements Serializable {
         HttpSession session = SessionUtils.getSession();
         Long userid= (Long) session.getAttribute("user_id");
 
-        jobsSvcImpl.toggleUserRegistrationForJob(jobid, userid);
+        boolean registered = jobsSvcImpl.toggleUserRegistrationForJob(jobid, userid);
+        if(registered){
+            //Call Message Driven Bean
+        }
     }
     
     public void refreshFJobsList(){
