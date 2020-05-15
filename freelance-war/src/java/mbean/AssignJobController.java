@@ -7,21 +7,36 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.inject.Inject;
+import javax.jms.JMSConnectionFactory;
+import javax.jms.JMSContext;
+import javax.jms.Queue;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import model.AssignJobModel;
 import model.JobsModel;
 import svc.JobsSvcImpl;
+import utils.SessionUtils;
 
 
 @Named(value = "assignJobController")
 @RequestScoped
 public class AssignJobController implements Serializable {
+
+    @Resource(mappedName = "jms/FreelanceDestQueue")
+    private Queue freelanceDestQueue;
+
+    @Inject
+    @JMSConnectionFactory("java:comp/DefaultJMSConnectionFactory")
+    private JMSContext context;
+   
     @EJB
     private JobsSvcImpl jobsSvcImpl;
     private List<AssignJobModel> assignJobModelList=new ArrayList<>();
@@ -69,10 +84,18 @@ public class AssignJobController implements Serializable {
             String jobid = req.getParameter("jobid"), freelancerIDs = req.getParameter("freeid");
             if( jobsSvcImpl.assignFreelancerToJobId(jobid, freelancerIDs, "Closed") ){
                 System.out.println("Updated jobid "+jobid+" by freelance ID "+freelancerIDs+" to Closed");
+                HttpSession session = SessionUtils.getSession();
+                Long userid= (Long) session.getAttribute("user_id");
+                //publish to JMS Queue..
+                sendJMSMessageToFreelanceDestQueue("Provider "+userid+" Assigned jobid "+jobid+" to freelance ID "+freelancerIDs+" to Closed");
             }else{
                 System.out.println("Failed to update jobid "+jobid+" by freelance ID "+freelancerIDs+" to Closed");
             }
         }
         return "providerJobs?faces-redirect=true";
+    }
+
+    private void sendJMSMessageToFreelanceDestQueue(String messageData) {
+        context.createProducer().send(freelanceDestQueue, messageData);
     }
 }

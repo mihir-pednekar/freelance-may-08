@@ -17,7 +17,12 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import javax.annotation.ManagedBean;
+import javax.annotation.Resource;
 import javax.enterprise.context.SessionScoped;
+import javax.inject.Inject;
+import javax.jms.JMSConnectionFactory;
+import javax.jms.JMSContext;
+import javax.jms.Queue;
 import javax.servlet.http.HttpSession;
 import model.JobsModel;
 import svc.UsersSvcImpl;
@@ -29,9 +34,13 @@ import utils.SessionUtils;
 @ManagedBean
 public class JobsDisplayController implements Serializable {
 
-    /**
-     * Creates a new instance of JobsDisplayController
-     */
+    @Resource(mappedName = "jms/FreelanceDestQueue")
+    private Queue freelanceDestQueue;
+
+    @Inject
+    @JMSConnectionFactory("java:comp/DefaultJMSConnectionFactory")
+    private JMSContext context;
+
     @EJB
     private JobsSvcImpl jobsSvcImpl;
     @EJB
@@ -212,7 +221,8 @@ public class JobsDisplayController implements Serializable {
         // if value true - freelancer userid regestered successfully for jobid
         // if value false - freelancer userid de-regestered successfully from jobid
         if(registered){
-            //Call Message Driven Bean
+            //publish to JMS Queue..
+            sendJMSMessageToFreelanceDestQueue("Username "+userid+" registered successfully for jobid "+jobid);
         }
     }
     
@@ -235,5 +245,9 @@ public class JobsDisplayController implements Serializable {
     
     public void completeJob(long jobid){
         jobsSvcImpl.completeJobAndPay(jobid);
+    }
+
+    private void sendJMSMessageToFreelanceDestQueue(String messageData) {
+        context.createProducer().send(freelanceDestQueue, messageData);
     }
 }

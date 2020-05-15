@@ -8,9 +8,14 @@ import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
+import javax.annotation.Resource;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.inject.Inject;
+import javax.jms.JMSConnectionFactory;
+import javax.jms.JMSContext;
+import javax.jms.Queue;
 import javax.servlet.http.HttpSession;
 import svc.LoginSvcImpl;
 import svc.UsersSvcImpl;
@@ -21,12 +26,12 @@ import utils.SessionUtils;
 @SessionScoped
 public class LoginController implements Serializable {
 
-//    @Resource(mappedName = "jms/FreelanceDestQueue")
-//    private Queue freelanceDestQueue;
-//
-//    @Inject
-//    @JMSConnectionFactory("java:comp/DefaultJMSConnectionFactory")
-//    private JMSContext context;
+    @Resource(mappedName = "jms/FreelanceDestQueue")
+    private Queue freelanceDestQueue;
+
+    @Inject
+    @JMSConnectionFactory("java:comp/DefaultJMSConnectionFactory")
+    private JMSContext context;
 
     @EJB
     private LoginSvcImpl loginSvcImpl;
@@ -73,15 +78,7 @@ public class LoginController implements Serializable {
     public String validateUser() throws NoSuchAlgorithmException{
 //        loginSvcImpl = new LoginSvcImpl();
         List<Users> userModelList = loginSvcImpl.validateUserFromDB(user, passwd);
-        if(userModelList.isEmpty()){
-            FacesContext.getCurrentInstance().addMessage(
-					null,
-					new FacesMessage(FacesMessage.SEVERITY_WARN,
-							ValidationConstants.INVALID_USER,
-							ValidationConstants.REQ_VALID_USER_PASS));
-            return "";
-        }
-        if(userModelList != null){
+        if(userModelList != null && !userModelList.isEmpty()){
             HttpSession session = SessionUtils.getSession();
             
             //publish to JMS Queue..
@@ -116,7 +113,7 @@ public class LoginController implements Serializable {
     }
 
     private void sendJMSMessageToFreelanceDestQueue(String messageData) {
-        //context.createProducer().send(freelanceDestQueue, messageData);
+        context.createProducer().send(freelanceDestQueue, messageData);
     }
     
     public String getFullName(){
