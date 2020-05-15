@@ -73,6 +73,14 @@ public class LoginController implements Serializable {
     public String validateUser() throws NoSuchAlgorithmException{
 //        loginSvcImpl = new LoginSvcImpl();
         List<Users> userModelList = loginSvcImpl.validateUserFromDB(user, passwd);
+        if(userModelList.isEmpty()){
+            FacesContext.getCurrentInstance().addMessage(
+					null,
+					new FacesMessage(FacesMessage.SEVERITY_WARN,
+							ValidationConstants.INVALID_USER,
+							ValidationConstants.REQ_VALID_USER_PASS));
+            return "";
+        }
         if(userModelList != null){
             HttpSession session = SessionUtils.getSession();
             
