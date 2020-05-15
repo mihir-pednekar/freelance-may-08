@@ -94,11 +94,11 @@ public class LoginController implements Serializable {
                 this.currentUser = um;
             });     
             if(role.equals("freelancer"))
-                return "freelancerHome";
+                return "freelancerHome?faces-redirect=true";
             else if(role.equals("provider"))
-                return "providerHome";
+                return "providerHome?faces-redirect=true";
             else if(role.equals("admin"))
-                return "adminHome";
+                return "adminHome?faces-redirect=true";
         }
         else{
             FacesContext.getCurrentInstance().addMessage(
