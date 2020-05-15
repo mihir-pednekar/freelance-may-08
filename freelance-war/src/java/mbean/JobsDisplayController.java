@@ -209,6 +209,8 @@ public class JobsDisplayController implements Serializable {
         Long userid= (Long) session.getAttribute("user_id");
 
         boolean registered = jobsSvcImpl.toggleUserRegistrationForJob(jobid, userid);
+        // if value true - freelancer userid regestered successfully for jobid
+        // if value false - freelancer userid de-regestered successfully from jobid
         if(registered){
             //Call Message Driven Bean
         }
